@@ -1,0 +1,19 @@
+{
+	{var:'public float scl = 0.1';}
+	{var:'public float offsetx = 0.1';}
+	a{
+		ctrl: button;
+		dxy: '100,20';
+		wh: 100,10;
+		event: 'scl += 1.0f;';
+	}
+	b{
+		ctrl: slider;
+		dxy: '0,20';
+		wh: 100,10;
+		event: 'scl -= 1.0f;';
+	}
+	z1{param:scl}
+	z2{param:offsetx}
+	
+}setup(code);
