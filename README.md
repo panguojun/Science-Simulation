@@ -1,7 +1,7 @@
 Title: Personal Project: Simulation Codes Repository
 
 Introduction:
-This project is a personal repository of simulation codes that I have developed over time. The codes cover various fields such as physics, chemistry, biology, and engineering. The aim of this project is to provide a centralized location for all my simulation codes, allowing me to easily access and maintain them.
+The use of AI will help us to better understand the universe and its mysteries. This project is a personal repository of simulation codes that I have developed over time. The codes cover various fields such as physics, chemistry, biology, and engineering. The aim of this project is to provide a centralized location for all my simulation codes, allowing me to easily access and maintain them.
 
 Features:
 - Variety of simulation codes: The repository includes codes for simulating molecular dynamics, fluid dynamics, quantum mechanics, and more.
@@ -9,7 +9,7 @@ Features:
 - Continuous improvement: I am constantly updating and improving the codes as I learn more and encounter new challenges.
 
 Installation:
-The codes are available on my Github repository. Simply clone the repository to your local machine to access the codes. The codes are written in various programming languages such as Python, MATLAB, and C++.
+The codes are available on my Github repository. Simply clone the repository to your local machine to access the codes. The codes are written in various programming languages such as Python, lua, shader and C++.
 
 Usage:
 Users can use the codes to simulate various phenomena in their respective fields. The codes are well-documented, making it easy to understand and modify them for specific use cases.
