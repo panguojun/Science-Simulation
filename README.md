@@ -14,8 +14,5 @@ The codes are available on my Github repository. Simply clone the repository to 
 ## Usage:
 Users can use the codes to simulate various phenomena in their respective fields. The codes are well-documented, making it easy to understand and modify them for specific use cases.
 
-## Contributing:
-While this is a personal project, I welcome contributions from the community. Users can submit pull requests to improve the codes or add new features. Feedback and suggestions are also welcome.
-
 ## Conclusion:
 This project is a personal endeavor to organize and maintain my simulation codes. I hope that this repository can be useful for others who are interested in simulation and scientific research.
