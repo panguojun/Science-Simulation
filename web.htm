@@ -1,0 +1,77 @@
+﻿html
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Spider Web Simulator</title>
+	<meta charset="utf-8">
+	<style>
+		canvas {
+			border: 1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<h1>Spider Web Simulator</h1>
+	<p>Drag the sliders to adjust the web's features:</p>
+	
+	<label>Number of radial lines: <input type="range" min="5" max="50" value="20" id="radial-lines"></label><br>
+	<label>Number of concentric circles: <input type="range" min="5" max="50" value="30" id="concentric-circles"></label><br>
+	<label>Spacing between radial lines: <input type="range" min="5" max="50" value="20" id="radial-spacing"></label><br>
+	<label>Spacing between concentric circles: <input type="range" min="5" max="50" value="20" id="concentric-spacing"></label><br>
+	<label>Thickness of radial lines: <input type="range" min="1" max="10" value="2" id="radial-thickness"></label><br>
+	<label>Thickness of concentric circles: <input type="range" min="1" max="10" value="1" id="concentric-thickness"></label><br>
+	
+	<canvas id="canvas" width="500" height="500"></canvas>
+	
+	<script>
+		const canvas = document.getElementById('canvas');
+		const ctx = canvas.getContext('2d');
+		
+		function drawSpiderWeb(radialLines, concentricCircles, radialSpacing, concentricSpacing, radialThickness, concentricThickness) {
+		  const centerX = canvas.width / 2;
+		  const centerY = canvas.height / 2;
+		  const maxRadius = Math.min(centerX, centerY) - concentricSpacing;
+		  ctx.clearRect(0, 0, canvas.width, canvas.height);
+		  for (let i = 0; i < concentricCircles; i++) {
+		    const radius = (i + 1) * concentricSpacing;
+		    ctx.beginPath();
+		    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+		    ctx.strokeStyle = `hsl(${i * (360 / concentricCircles)}, 100%, 50%)`;
+		    ctx.lineWidth = concentricThickness;
+		    ctx.stroke();
+
+		    for (let j = 0; j < radialLines; j++) {
+		      const angle = j * (2 * Math.PI / radialLines);
+		      const startX = centerX + Math.cos(angle) * radius;
+		      const startY = centerY + Math.sin(angle) * radius;
+		      const endX = centerX + Math.cos(angle) * maxRadius;
+		      const endY = centerY + Math.sin(angle) * maxRadius;
+		      ctx.beginPath();
+		      ctx.moveTo(startX, startY);
+		      ctx.lineTo(endX, endY);
+		      ctx.strokeStyle = `hsl(${j * (360 / radialLines)}, 100%, 50%)`;
+		      ctx.lineWidth = radialThickness;
+		      ctx.stroke();
+		    }
+		  }
+		}
+		function updateSpiderWeb() {
+			const radialLines = document.getElementById('radial-lines').value;
+			const concentricCircles = document.getElementById('concentric-circles').value;
+			const radialSpacing = document.getElementById('radial-spacing').value;
+			const concentricSpacing = document.getElementById('concentric-spacing').value;
+			const radialThickness = document.getElementById('radial-thickness').value;
+			const concentricThickness = document.getElementById('concentric-thickness').value;
+			drawSpiderWeb(radialLines, concentricCircles, radialSpacing, concentricSpacing, radialThickness, concentricThickness);
+		}
+		
+		document.getElementById('radial-lines').addEventListener('input', updateSpiderWeb);
+		document.getElementById('concentric-circles').addEventListener('input', updateSpiderWeb);
+		document.getElementById('radial-spacing').addEventListener('input', updateSpiderWeb);
+		document.getElementById('concentric-spacing').addEventListener('input', updateSpiderWeb);
+		document.getElementById('radial-thickness').addEventListener('input', updateSpiderWeb);
+		document.getElementById('concentric-thickness').addEventListener('input', updateSpiderWeb);
+		updateSpiderWeb();
+	</script>
+</body>
+</html>

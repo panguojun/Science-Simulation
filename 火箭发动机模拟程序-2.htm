@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>火箭发动机模拟程序</title>
+    <style type="text/css">
+        #canvas {
+            width: 800px;
+            height: 600px;
+            border: 1px solid #000;
+        }
+        #buttons {
+            margin-top: 10px;
+        }
+        button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="buttons">
+        <button id="btnFuel">燃料</button>
+        <button id="btnOxygen">氧气</button>
+        <button id="btnIgnite">点火</button>
+        <button id="btnBurn">燃烧</button>
+        <button id="btnRelease">排放</button>
+    </div>
+    <script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+
+    var fuel = 0;       // 燃料
+    var oxygen = 0;     // 氧气
+    var ignited = false;    // 是否点火
+    var burning = false;    // 是否燃烧
+    var released = false;   // 是否排放
+
+    // 绘制预燃室
+    function drawPrecombustionChamber() {
+        ctx.beginPath();
+        ctx.moveTo(100, 200);
+        ctx.lineTo(150, 200);
+        ctx.lineTo(150, 250);
+        ctx.lineTo(100, 250);
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    // 绘制燃烧室
+    function drawCombustionChamber() {
+        ctx.beginPath();
+        ctx.moveTo(150, 200);
+        ctx.lineTo(450, 200);
+        ctx.lineTo(450, 300);
+        ctx.lineTo(150, 300);
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    // 绘制喷嘴
+    function drawNozzle() {
+        ctx.beginPath();
+        ctx.moveTo(450, 250);
+        ctx.lineTo(500, 250);
+        ctx.lineTo(500, 275);
+        ctx.lineTo(450, 275);
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    // 绘制燃料管道
+    function drawFuelPipe() {
+        ctx.beginPath();
+        ctx.moveTo(50, 225);
+        ctx.lineTo(100, 225);
+        ctx.stroke();
+    }
+
+    // 绘制氧气管道
+    function drawOxygenPipe() {
+        ctx.beginPath();
+        ctx.moveTo(50, 275);
+        ctx.lineTo(100, 275);
+        ctx.stroke();
+    }
+
+    // 绘制燃料和氧气的输送
+    function drawFuelAndOxygen() {
+        ctx.fillStyle = '#f00';
+        ctx.fillRect(50, 225, fuel, 10);
+        ctx.fillStyle = '#0f0';
+        ctx.fillRect(50, 275, oxygen, 10);
+    }
+
+    // 绘制火焰
+    function drawFlame() {
+        ctx.beginPath();
+        ctx.moveTo(450, 275);
+        ctx.lineTo(475, 275 + Math.random() * 50);
+        ctx.lineTo(500, 275);
+        ctx.closePath();
+        ctx.fillStyle = '#f00';
+        ctx.fill();
+    }
+
+    // 绘制火箭发动机
+    function drawRocketEngine() {
+        drawPrecombustionChamber();
+        drawCombustionChamber();
+        drawNozzle();
+        drawFuelPipe();
+        drawOxygenPipe();
+        drawFuelAndOxygen();
+        if (burning) {
+            drawFlame();
+        }
+    }
+
+    // 更新燃料和氧气的输送
+    function updateFuelAndOxygen() {
+        if (ignited && fuel > 0 && oxygen > 0) {
+            burning = true;
+            fuel -= 1;
+            oxygen -= 2;
+        } else {
+            burning = false;
+        }
+        if (released) {
+            fuel = 0;
+            oxygen = 0;
+        }
+        if (fuel < 0) {
+            fuel = 0;
+        }
+        if (oxygen < 0) {
+            oxygen = 0;
+        }
+    }
+
+    // 更新画布
+    function updateCanvas() {
+       // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawRocketEngine();
+        updateFuelAndOxygen();
+    }
+
+    // 点击燃料按钮
+    document.getElementById('btnFuel').onclick = function() {
+        fuel += 10;
+        if (fuel > 100) {
+            fuel = 100;
+        }
+    };
+
+    // 点击氧气按钮
+    document.getElementById('btnOxygen').onclick = function() {
+        oxygen += 10;
+        if (oxygen > 100) {
+            oxygen = 100;
+        }
+    };
+
+    // 点击点火按钮
+    document.getElementById('btnIgnite').onclick = function() {
+        ignited = true;
+    };
+
+    // 点击燃烧按钮
+    document.getElementById('btnBurn').onclick = function() {
+        burning = true;
+    };
+
+    // 点击排放按钮
+    document.getElementById('btnRelease').onclick = function() {
+        released = true;
+    };
+
+    // 定时更新画布
+    setInterval(updateCanvas, 50);
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voronoi Cells</title>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+  <svg width="500" height="500"></svg>
+  <script>
+    // Generate random points
+    const points = d3.range(20)
+      .map(() => [Math.random() * 500, Math.random() * 500]);
+
+    // Create the Voronoi diagram
+    const voronoi = d3.Delaunay.from(points).voronoi([0, 0, 500, 500]);
+
+    // Create the SVG element
+    const svg = d3.select('svg');
+
+    // Draw the cell walls
+    svg.append('g')
+      .selectAll('path')
+      .data(voronoi.cellPolygons())
+      .enter()
+      .append('path')
+      .attr('d', d => `M${d.join('L')}Z`)
+      .attr('stroke', 'black')
+      .attr('stroke-width', '2')
+      .attr('fill', 'none');
+
+    // Draw the nuclei
+    svg.selectAll('circle')
+      .data(points)
+      .enter()
+      .append('circle')
+      .attr('cx', d => d[0])
+      .attr('cy', d => d[1])
+      .attr('r', '5')
+      .attr('fill', 'black');
+  </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mercury Orbit</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+
+      // 设置画布尺寸
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const G = 6.6743e-11; // 重力常数
+      const M = 1.9891e30; // 太阳质量
+      const e = 0.205630; // 离心率
+      const au = 149597870700;
+      const a = 0.387098 * au; // 半长轴
+      const m = 3.302e23; // 水星质量
+      const r0 = a * (1 - e); // 近日点距离
+      const T = 87.969 * 24 * 3600; // 水星公转周期
+
+      // 计算轨道点集
+      function calculateOrbitPoints() {
+        const orbitPoints = [];
+        for (let t = 0; t < T; t += 3600) {
+          const { x, y } = mercuryOrbit(t);
+          orbitPoints.push([canvas.width / 2 + x, canvas.height / 2 + y]);
+        }
+        return orbitPoints;
+      }
+
+      // 绘制轨道
+      function drawOrbit(orbitPoints) {
+        ctx.beginPath();
+        ctx.moveTo(orbitPoints[0][0], orbitPoints[0][1]);
+        for (let i = 1; i < orbitPoints.length; i++) {
+          ctx.lineTo(orbitPoints[i][0], orbitPoints[i][1]);
+        }
+        ctx.stroke();
+      }
+
+      function mercuryOrbit(t) {
+        const n = 2 * Math.PI / T; // 平均角速度
+        const M0 = 0.0; // 初始平近点角
+        const E0 = M0; // 初始偏近点角
+        const E = solveE(E0, n, t); // 解出偏近点角
+        const r = a * (1 - e * Math.cos(E)); // 计算水星距离太阳的距离
+        const v = Math.sqrt(G * M * (2 / r - 1 / a)); // 计算水星在椭圆轨道上的运动速度
+        const theta = Math.atan2(Math.sqrt(1 - e * e) * Math.sin(E), Math.cos(E) - e); // 计算水星与近日点的夹角
+        const x = r / au * 100 * Math.cos(theta); // 计算水星在x轴上的位置
+        const y = r / au * 100 * Math.sin(theta); // 计算水星在y轴上的位置
+        return { x, y };
+      }
+
+      function solveE(E0, n, t) {
+        const tol = 1e-8; // 迭代精度
+        let E = E0;
+        let delta = 1.0;
+        while (delta > tol) {
+          const f = E - e * Math.sin(E) - n * t;
+          const fp = 1 - e * Math.cos(E);
+          delta = -f / fp;
+          E += delta;
+        }
+        return E;
+      }
+
+      let orbitPoints = calculateOrbitPoints();
+
+      // 开始动画
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawOrbit(orbitPoints);
+        const { x, y } = mercuryOrbit(performance.now()*1000);
+        ctx.beginPath();
+        ctx.arc(canvas.width / 2 + x, canvas.height / 2 + y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ff9933';
+        ctx.fill();
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      // 监听窗口大小变化，重新计算轨道点集
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        orbitPoints = calculateOrbitPoints();
+      });
+    </script>
+  </body>
+</html>

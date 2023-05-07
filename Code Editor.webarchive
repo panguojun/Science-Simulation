@@ -1,0 +1,343 @@
+bplist00Ñ_WebMainResourceÕ	
+_WebResourceTextEncodingName^WebResourceURL_WebResourceFrameName_WebResourceData_WebResourceMIMETypeUUTF-8_cfile:///Users/guojunpan/Documents/%E3%80%90%E7%A7%91%E5%AD%A6%E6%A8%A1%E6%8B%9F%E3%80%91/editor.htmPOMä<!DOCTYPE html><html><head>
+	<title>Code Editor</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #909090;
+			font-family: Arial, sans-serif;
+		}
+		#editor {
+			width: 100%;
+			height: 99vh;
+			padding: 10px;
+			box-sizing: border-box;
+			background-color: #fff;
+			border: 1px solid #ccc;
+			overflow-x: scroll;
+			overflow-y: scroll;
+			font-size: 14px;
+			color: #333;
+			tab-size: 4;
+			-moz-tab-size: 4;
+		}
+		.menu {
+			display: flex;
+			background-color: #333;
+			color: #fff;
+			padding: 10px;
+			box-sizing: border-box;
+		}
+		.menu-item {
+			margin-right: 10px;
+			cursor: pointer;
+		}
+		.save-btn {
+			background-color: #4CAF50;
+			color: #fff;
+			border: none;
+			padding: 10px;
+			box-sizing: border-box;
+			cursor: pointer;
+		}
+		.run-btn {
+			background-color: #008CBA;
+			color: #fff;
+			border: none;
+			padding: 10px;
+			box-sizing: border-box;
+			cursor: pointer;
+		}
+		.tag {
+			color: #f00;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<div class="menu">
+		<div class="menu-item" id="file-new">New</div>
+		<div class="menu-item" id="file-open">Open</div>
+		<div class="menu-item" id="file-save">Save</div>
+		<div class="menu-item" id="file-close">Close</div>
+		<div class="menu-item" id="edit-undo">Undo</div>
+		<div class="menu-item" id="edit-redo">Redo</div>
+		<div style="flex-grow: 1;"></div>
+		<button class="save-btn" id="save-btn">Save</button>
+		<button class="run-btn" id="run-btn">Run</button>
+	</div>
+	<textarea id="editor">&lt;!DOCTYPE html&gt;
+&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;html&lt;/span&gt;&gt;
+&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;head&lt;/span&gt;&gt;
+	&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;title&lt;/span&gt;&gt;Astronomy Simulator&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/title&lt;/span&gt;&gt;
+	&lt;meta charset=&lt;span class="string"&gt;"UTF-&lt;span class="number"&gt;8&lt;/span&gt;"&lt;/span&gt;&gt;
+	&lt;meta name=&lt;span class="string"&gt;"viewport"&lt;/span&gt; content=&lt;span class="string"&gt;"width=device-width, initial-scale=&lt;span class="number"&gt;1&lt;/span&gt;.&lt;span class="number"&gt;0&lt;/span&gt;"&lt;/span&gt;&gt;
+	&lt;style&gt;
+		body {
+			font-family: Arial, sans-serif;
+			margin: &lt;span class="number"&gt;0&lt;/span&gt;;
+			padding: &lt;span class="number"&gt;0&lt;/span&gt;;
+		}
+		.header {
+			background-color: #&lt;span class="number"&gt;333&lt;/span&gt;;
+			color: #fff;
+			padding: 10px;
+			text-align: center;
+		}
+		.main {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			padding: 20px;
+		}
+		.sidebar {
+			background-color: #eee;
+			flex: &lt;span class="number"&gt;1&lt;/span&gt;;
+			padding: 20px;
+		}
+		.sidebar h3 {
+			margin-top: &lt;span class="number"&gt;0&lt;/span&gt;;
+		}
+		.sidebar ul {
+			list-style-type: none;
+			margin: &lt;span class="number"&gt;0&lt;/span&gt;;
+			padding: &lt;span class="number"&gt;0&lt;/span&gt;;
+		}
+		.sidebar li {
+			margin-bottom: 10px;
+		}
+		.canvas-container {
+			background-color: #fff;
+			border: 1px solid #ccc;
+			flex: &lt;span class="number"&gt;2&lt;/span&gt;;
+			height: 500px;
+			position: relative;
+			overflow: hidden;
+		}
+		.canvas {
+			height: &lt;span class="number"&gt;100&lt;/span&gt;%;
+			left: &lt;span class="number"&gt;0&lt;/span&gt;;
+			position: absolute;
+			top: &lt;span class="number"&gt;0&lt;/span&gt;;
+			width: &lt;span class="number"&gt;100&lt;/span&gt;%;
+		}
+		.control-panel {
+			background-color: #eee;
+			flex: &lt;span class="number"&gt;1&lt;/span&gt;;
+			padding: 20px;
+		}
+		.control-panel h2 {
+			margin-top: &lt;span class="number"&gt;0&lt;/span&gt;;
+		}
+		.control-panel label {
+			display: block;
+			margin-bottom: 10px;
+		}
+		.control-panel input[type=&lt;span class="string"&gt;"range"&lt;/span&gt;] {
+			width: &lt;span class="number"&gt;100&lt;/span&gt;%;
+		}
+		.control-panel select {
+			width: &lt;span class="number"&gt;100&lt;/span&gt;%;
+		}
+		.control-panel button {
+			background-color: #4CAF50;
+			border: none;
+			color: #fff;
+			cursor: pointer;
+			font-size: 16px;
+			padding: 10px;
+			width: &lt;span class="number"&gt;100&lt;/span&gt;%;
+		}
+	&lt;/style&gt;
+&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/head&lt;/span&gt;&gt;
+&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;body&lt;/span&gt;&gt;
+	&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;div&lt;/span&gt; class=&lt;span class="string"&gt;"header"&lt;/span&gt;&gt;
+		&lt;h1&gt;Astronomy Simulator&lt;/h1&gt;
+	&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/div&lt;/span&gt;&gt;
+	&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;div&lt;/span&gt; class=&lt;span class="string"&gt;"main"&lt;/span&gt;&gt;
+		&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;div&lt;/span&gt; class=&lt;span class="string"&gt;"canvas-container"&lt;/span&gt;&gt;
+			&lt;canvas class=&lt;span class="string"&gt;"canvas"&lt;/span&gt; width=&lt;span class="string"&gt;"&lt;span class="number"&gt;800&lt;/span&gt;"&lt;/span&gt; height=&lt;span class="string"&gt;"&lt;span class="number"&gt;500&lt;/span&gt;"&lt;/span&gt;&gt;&lt;/canvas&gt;
+		&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/div&lt;/span&gt;&gt;
+		&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;div&lt;/span&gt; class=&lt;span class="string"&gt;"sidebar"&lt;/span&gt;&gt;
+			&lt;h3&gt;Simulation Data&lt;/h3&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;ul&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;li&lt;/span&gt;&gt;Current Time: &lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;span&lt;/span&gt; id=&lt;span class="string"&gt;"time"&lt;/span&gt;&gt;&lt;span class="number"&gt;0&lt;/span&gt;&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/span&lt;/span&gt;&gt;&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/li&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;li&lt;/span&gt;&gt;Current Speed: &lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;span&lt;/span&gt; id=&lt;span class="string"&gt;"speed"&lt;/span&gt;&gt;&lt;span class="number"&gt;50&lt;/span&gt;&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/span&lt;/span&gt;&gt;&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/li&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;li&lt;/span&gt;&gt;Selected Planet: &lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;span&lt;/span&gt; id=&lt;span class="string"&gt;"planet"&lt;/span&gt;&gt;Mercury&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/span&lt;/span&gt;&gt;&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/li&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;li&lt;/span&gt;&gt;Selected Object: &lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;span&lt;/span&gt; id=&lt;span class="string"&gt;"object"&lt;/span&gt;&gt;Sun&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/span&lt;/span&gt;&gt;&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/li&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;li&lt;/span&gt;&gt;Selected View: &lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;span&lt;/span&gt; id=&lt;span class="string"&gt;"view"&lt;/span&gt;&gt;Top-Down&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/span&lt;/span&gt;&gt;&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/li&lt;/span&gt;&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/ul&lt;/span&gt;&gt;
+		&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/div&lt;/span&gt;&gt;
+		&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;div&lt;/span&gt; class=&lt;span class="string"&gt;"control-panel"&lt;/span&gt;&gt;
+			&lt;h2&gt;Simulation Controls&lt;/h2&gt;
+			&lt;label for=&lt;span class="string"&gt;"speed-slider"&lt;/span&gt;&gt;Speed:&lt;/label&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;input&lt;/span&gt; type=&lt;span class="string"&gt;"range"&lt;/span&gt; id=&lt;span class="string"&gt;"speed-slider"&lt;/span&gt; min=&lt;span class="string"&gt;"&lt;span class="number"&gt;0&lt;/span&gt;"&lt;/span&gt; max=&lt;span class="string"&gt;"&lt;span class="number"&gt;100&lt;/span&gt;"&lt;/span&gt; value=&lt;span class="string"&gt;"&lt;span class="number"&gt;50&lt;/span&gt;"&lt;/span&gt;&gt;
+			&lt;label for=&lt;span class="string"&gt;"planet-select"&lt;/span&gt;&gt;Planet:&lt;/label&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;select&lt;/span&gt; id=&lt;span class="string"&gt;"planet-select"&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"mercury"&lt;/span&gt;&gt;Mercury&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"venus"&lt;/span&gt;&gt;Venus&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"earth"&lt;/span&gt;&gt;Earth&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"mars"&lt;/span&gt;&gt;Mars&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"jupiter"&lt;/span&gt;&gt;Jupiter&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"saturn"&lt;/span&gt;&gt;Saturn&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"uranus"&lt;/span&gt;&gt;Uranus&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"neptune"&lt;/span&gt;&gt;Neptune&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/select&lt;/span&gt;&gt;
+			&lt;label for=&lt;span class="string"&gt;"object-select"&lt;/span&gt;&gt;Object:&lt;/label&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;select&lt;/span&gt; id=&lt;span class="string"&gt;"object-select"&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"sun"&lt;/span&gt;&gt;Sun&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"mercury"&lt;/span&gt;&gt;Mercury&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"venus"&lt;/span&gt;&gt;Venus&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"earth"&lt;/span&gt;&gt;Earth&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"mars"&lt;/span&gt;&gt;Mars&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"jupiter"&lt;/span&gt;&gt;Jupiter&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"saturn"&lt;/span&gt;&gt;Saturn&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"uranus"&lt;/span&gt;&gt;Uranus&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"neptune"&lt;/span&gt;&gt;Neptune&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"moon"&lt;/span&gt;&gt;Moon&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"asteroid"&lt;/span&gt;&gt;Asteroid&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/select&lt;/span&gt;&gt;
+			&lt;label for=&lt;span class="string"&gt;"view-select"&lt;/span&gt;&gt;View:&lt;/label&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;select&lt;/span&gt; id=&lt;span class="string"&gt;"view-select"&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"top-down"&lt;/span&gt;&gt;Top-Down&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"side"&lt;/span&gt;&gt;Side&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+				&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;option&lt;/span&gt; value=&lt;span class="string"&gt;"front"&lt;/span&gt;&gt;Front&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/option&lt;/span&gt;&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/select&lt;/span&gt;&gt;
+			&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;button&lt;/span&gt; id=&lt;span class="string"&gt;"start-button"&lt;/span&gt;&gt;Start Simulation&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/button&lt;/span&gt;&gt;
+		&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/div&lt;/span&gt;&gt;
+	&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/div&lt;/span&gt;&gt;
+	&lt;script&gt;
+	&lt;/script&gt;
+&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/body&lt;/span&gt;&gt;
+&lt;span class=&lt;span class="string"&gt;"tag"&lt;/span&gt;&gt;&lt;/html&lt;/span&gt;&gt;</textarea>
+
+	<script>
+		const editor = document.querySelector('#editor');
+		const saveBtn = document.querySelector('#save-btn');
+		const runBtn = document.querySelector('#run-btn');
+
+		// Load saved code from localStorage
+		if (localStorage.getItem('code')) {
+			editor.value = localStorage.getItem('code');
+			highlightCode();
+		}
+
+		// Syntax highlighting
+		editor.addEventListener('input', () => {
+			highlightCode();
+			localStorage.setItem('code', editor.value);
+		});
+
+		function highlightCode() {
+		  const keywords = ['html', 'head', 'title', 'body', 'p', 'div', 'span', 'img', 'a', 'ul', 'ol', 'li', 'table', 'tr', 'td', 'th', 'form', 'input', 'button', 'select', 'option', 'br'];
+		  const regex = new RegExp(`</?(?:${keywords.join('|')})\\b`, 'gi');
+		  editor.innerHTML = editor.value.replace(regex, match => `<span class="tag">${match}</span>`);
+		  const stringRegex = /('.*?')|(".*?")/g;
+		  editor.innerHTML = editor.innerHTML.replace(stringRegex, match => `<span class="string">${match}</span>`);
+		  const numberRegex = /\b(\d+)\b/g;
+		  editor.innerHTML = editor.innerHTML.replace(numberRegex, match => `<span class="number">${match}</span>`);
+		  const commentRegex = /\/\/.*|\/\*[\s\S]*?\*\//g;
+		  editor.innerHTML = editor.innerHTML.replace(commentRegex, match => `<span class="comment">${match}</span>`);
+		}
+
+		// New file
+		document.querySelector('#file-new').addEventListener('click', () => {
+			editor.value = '';
+			localStorage.removeItem('filename');
+			localStorage.removeItem('code');
+			highlightCode();
+		});
+
+		// Open file
+		document.querySelector('#file-open').addEventListener('click', () => {
+			const input = document.createElement('input');
+			input.type = 'file';
+			input.accept = '.html,.htm,.txt';
+			input.addEventListener('change', event => {
+				const file = event.target.files[0];
+				if (file) {
+					const reader = new FileReader();
+					reader.readAsText(file);
+					reader.onload = () => {
+						editor.value = reader.result;
+						highlightCode();
+						localStorage.setItem('filename', file.name);
+						localStorage.setItem('code', reader.result);
+					};
+				}
+			});
+			input.click();
+		});
+
+		// Save file
+		document.querySelector('#file-save').addEventListener('click', () => {
+			const filename = localStorage.getItem('filename');
+			if (filename) {
+				const code = editor.value;
+				saveFile(filename, code);
+				localStorage.setItem('code', code);
+			}
+		});
+
+		// Close file
+		document.querySelector('#file-close').addEventListener('click', () => {
+			editor.value = '';
+			localStorage.removeItem('filename');
+			localStorage.removeItem('code');
+			highlightCode();
+		});
+
+		// Save button
+		saveBtn.addEventListener('click', () => {
+			const filename = localStorage.getItem('filename');
+			if (filename) {
+				const code = editor.value;
+				saveFile(filename, code);
+				localStorage.setItem('code', code);
+				alert('File saved successfully!');
+			} else {
+				document.querySelector('#file-save-as').click();
+			}
+		});
+
+		// Run button
+		runBtn.addEventListener('click', () => {
+			const code = editor.value;
+			const newWindow = window.open();
+			newWindow.document.write(code);
+			newWindow.document.close();
+		});
+
+		// Undo button
+		document.querySelector('#edit-undo').addEventListener('click', () => {
+			editor.undo();
+		});
+
+		// Redo button
+		document.querySelector('#edit-redo').addEventListener('click', () => {
+			editor.redo();
+		});
+
+		// Undo and redo using keyboard shortcuts
+		document.addEventListener('keydown', event => {
+			if (event.ctrlKey && event.key === 'z') {
+				editor.undo();
+			}
+			if (event.ctrlKey && event.key === 'y') {
+				editor.redo();
+			}
+		});
+
+		function saveFile(filename, content) {
+			const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = filename;
+			a.click();
+			URL.revokeObjectURL(url);
+		}
+	</script>
+
+</body></html>Ytext/html    ( F U l ~ ” š Né                           Nó

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>三体模拟</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas"></canvas>
+    <button onclick="addPlanet()">添加星球</button>
+    <script>
+// 定义三个星球的初始状态
+var planets = [
+    {
+        x: 200,
+        y: 150,
+        mass: 10000,
+        vx: 0,
+        vy: -2
+    },
+    {
+        x: 400,
+        y: 150,
+        mass: 10000,
+        vx: 0,
+        vy: 2
+    },
+    {
+        x: 300,
+        y: 350,
+        mass: 10000,
+        vx: 2,
+        vy: 0
+    }
+];
+
+// 定义画布和上下文
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+      // 设置画布尺寸
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+// 添加星球的函数
+function addPlanet() {
+    var x = Math.random() * canvas.width;
+    var y = Math.random() * canvas.height;
+    var mass = 100 + Math.random() * 900;
+    var vx = Math.random() * 2-Math.random() * 2;
+    var vy = Math.random() * 2-Math.random() * 2;
+    var planet = {
+        x: x,
+        y: y,
+        mass: mass,
+        vx: vx,
+        vy: vy
+    };
+    planets.push(planet);
+}
+
+// 定义每一帧的动画函数
+function animate() {
+    // 清空画布
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    
+    // 更新每个星球的位置和速度
+    for (var i = 0; i < planets.length; i++) {
+        for (var j = 0; j < planets.length; j++) {
+            if (i != j) {
+                var dx = planets[j].x - planets[i].x;
+                var dy = planets[j].y - planets[i].y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                var force = 0.1 * planets[i].mass * planets[j].mass / (distance * distance);
+                var ax = force * dx / distance / planets[i].mass;
+                var ay = force * dy / distance / planets[i].mass;
+                planets[i].vx += ax;
+                planets[i].vy += ay;
+            }
+        }
+        planets[i].x += planets[i].vx;
+        planets[i].y += planets[i].vy;
+        
+        // 绘制每个星球
+        ctx.beginPath();
+        ctx.arc(planets[i].x, planets[i].y, 10, 0, 2 * Math.PI);
+        ctx.fillStyle = "gray";
+        ctx.fill();
+        
+       
+    }
+    
+    // 绘制星球之间的连线
+    for (var i = 0; i < planets.length; i++) {
+        for (var j = i + 1; j < planets.length; j++) {
+            var dx = planets[j].x - planets[i].x;
+            var dy = planets[j].y - planets[i].y;
+            var distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 100) {
+                ctx.beginPath();
+                ctx.moveTo(planets[i].x, planets[i].y);
+                ctx.lineTo(planets[j].x, planets[j].y);
+                ctx.strokeStyle = "gray";
+                ctx.stroke();
+            }
+        }
+    }
+    
+    // 删除超过1个周期的星球
+    for (var i = 0; i < planets.length; i++) {
+        if (Math.sqrt(planets[i].x * planets[i].x + planets[i].y * planets[i].y) > 2000) {
+            planets.splice(i, 1);
+            i--;
+        }
+    }
+    
+    // 循环调用动画函数
+    requestAnimationFrame(animate);
+}
+
+// 开始动画
+animate();
+</script>
+</body>
+</html>
