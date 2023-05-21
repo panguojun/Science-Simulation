@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>绘制向量坐标投影</title>
+	<style>
+		body {
+			background-color: black;
+		}
+
+		.container {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			margin-top: 50px;
+		}
+
+		.box {
+			position: relative;
+			width: 400px;
+			height: 400px;
+			margin: 20px;
+			border: 2px solid white;
+		}
+
+		.axis-x {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			width: 100%;
+			height: 2px;
+			background-color: red;
+			transform: translateY(-50%);
+		}
+
+		.axis-y {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			width: 2px;
+			height: 100%;
+			background-color: green;
+			transform: translateX(-50%);
+		}
+
+		.point {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 10px;
+			height: 10px;
+			background-color: white;
+			transform: translate(-50%, -50%);
+		}
+
+		.input {
+			display: flex;
+			align-items: center;
+			margin-bottom: 20px;
+			color: white;
+		}
+
+		.input label {
+			margin-right: 10px;
+		}
+
+		.input input {
+			width: 500px;
+			font-size: 18px;
+			padding: 5px;
+		}
+
+		.input button {
+			font-size: 18px;
+			padding: 5px 10px;
+			background-color: white;
+			color: black;
+			border: none;
+			cursor: pointer;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="input">
+		<label for="vector" style="color: #00ff00;">请输入任意维度的特征向量：</label>
+		<input type="text" id="vector">
+		<button onclick="draw()">绘制</button>
+	</div>
+	<div class="container"></div>
+	<script>
+		function draw() {
+			const vector = document.getElementById('vector').value;
+			const arr = vector.split(',').map(num => Number(num));
+			const dimensions = arr.length;
+
+			const container = document.querySelector('.container');
+			container.innerHTML = '';
+
+			for (let i = 0; i < dimensions; i++) {
+				const box = document.createElement('div');
+				box.className = 'box';
+				container.appendChild(box);
+
+				const axisX = document.createElement('div');
+				axisX.className = 'axis-x';
+				box.appendChild(axisX);
+
+				const axisY = document.createElement('div');
+				axisY.className = 'axis-y';
+				box.appendChild(axisY);
+
+				const point = document.createElement('div');
+				point.className = 'point';
+				point.style.top = `${50 - (arr[i] * 10)}%`;
+				point.style.left = `${50 + (arr[i% dimensions] * 10)}%`;
+				box.appendChild(point);
+			}
+		}
+	</script>
+</body>
+</html>

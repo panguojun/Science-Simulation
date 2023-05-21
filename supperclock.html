@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Clock</title>
+<style>
+body {
+background-color: black;
+margin: 0;
+padding: 0;
+}
+	canvas {
+		display: block;
+		margin: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+	// Set canvas size to screen size
+	var screenWidth = window.innerWidth;
+	var screenHeight = window.innerHeight;
+	canvas.width = screenWidth;
+	canvas.height = screenHeight;
+	
+	// Set scale factor to adjust for screen size
+	var scaleFactor = Math.min(screenWidth, screenHeight) / 1080;
+	
+	// Set clock parameters scaled to screen size
+	var centerX = screenWidth / 2;
+	var centerY = screenHeight / 2;
+	var radius = Math.min(centerX, centerY) + 50 * scaleFactor;
+    var minRadius = radius * 0.75;
+	var hourRadius = radius / 2;
+	var weekdayRadius = radius / 3;
+	var monthRadius = radius / 6;
+	var minuteMarkerRadius = 5 * scaleFactor;
+	var hourMarkerRadius = 10 * scaleFactor;
+	var weekdayFontSize = 20 * scaleFactor;
+	var monthFontSize = 16 * scaleFactor;
+	var hourHandWidth = 5 * scaleFactor;
+	var minuteHandWidth = 3 * scaleFactor;
+	var secondHandWidth = 1 * scaleFactor;
+	var arrowSize = 20 * scaleFactor;
+	
+	function drawClock() {
+		// Clear canvas
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		
+		// Draw minutes circle
+		ctx.beginPath();
+		ctx.arc(centerX, centerY, minRadius, 0, 2 * Math.PI);
+		ctx.strokeStyle = "white";
+		ctx.lineWidth = 1 * scaleFactor;
+		ctx.stroke();
+		
+		// Draw hour circle
+		ctx.beginPath();
+		ctx.arc(centerX, centerY, hourRadius, 0, 2 * Math.PI);
+		ctx.strokeStyle = "white";
+		ctx.lineWidth = 2 * scaleFactor;
+		ctx.stroke();
+		
+		// Draw weekday circle
+		ctx.beginPath();
+		ctx.arc(centerX, centerY, weekdayRadius, 0, 2 * Math.PI);
+		ctx.strokeStyle = "white";
+		ctx.lineWidth = 3 * scaleFactor;
+		ctx.stroke();
+		
+		// Draw month circle
+		ctx.beginPath();
+		ctx.arc(centerX, centerY, monthRadius, 0, 2 * Math.PI);
+		ctx.strokeStyle = "white";
+		ctx.lineWidth = 4 * scaleFactor;
+		ctx.stroke();
+		
+		// Draw minute markers
+		for (var i = 0; i < 60; i++) {
+			var angle = i * Math.PI / 30;
+			var x = centerX + (minRadius - 10 * scaleFactor) * Math.sin(angle);
+			var y = centerY - (minRadius - 10 * scaleFactor) * Math.cos(angle);
+			ctx.beginPath();
+            if(i % 5 == 0){
+                 ctx.arc(x, y, minuteMarkerRadius * 1.5, 0, 2 * Math.PI);
+                 ctx.fillStyle = "white";
+                 }
+            else{
+			     ctx.arc(x, y, minuteMarkerRadius, 0, 2 * Math.PI);
+			     ctx.fillStyle = "grey";
+			     }
+			
+			ctx.fill();
+		}
+		
+		// Draw hour markers
+		var hours = ["XII","I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
+		ctx.font = weekdayFontSize*1.5 + "px Arial";
+		for (var i = 0; i < 12; i++) {
+			var angle = i * Math.PI / 6;
+			var x = centerX + (hourRadius - 10 * scaleFactor) * Math.sin(angle);
+			var y = centerY - (hourRadius - 10 * scaleFactor) * Math.cos(angle);
+			ctx.beginPath();
+			ctx.arc(x, y, hourMarkerRadius/2, 0, 2 * Math.PI);
+			ctx.fillStyle = "white";
+			ctx.fill();
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			x = centerX + (hourRadius + 18 * scaleFactor) * Math.sin(angle);
+			y = centerY - (hourRadius + 18 * scaleFactor) * Math.cos(angle);
+			ctx.fillText(hours[i], x, y);
+		}
+		
+		// Draw weekday markers
+		var weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+		ctx.font = weekdayFontSize + "px Arial";
+		ctx.fillStyle = "grey";
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		for (var i = 0; i < 7; i++) {
+			var angle = i * (Math.PI * 2 / 7) 
+			var x = centerX + (weekdayRadius + 20 * scaleFactor) * Math.sin(angle);
+			var y = centerY - (weekdayRadius  + 20 * scaleFactor) * Math.cos(angle);
+			ctx.fillText(weekdays[i], x, y);
+		}
+		
+		// Draw month markers
+		var months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+		for (var i = 0; i < 12; i++) {
+			var angle = i * Math.PI / 6;
+			var x = centerX + (monthRadius + 18 * scaleFactor) * Math.sin(angle);
+			var y = centerY - (monthRadius + 18 * scaleFactor) * Math.cos(angle);
+			ctx.font = monthFontSize + "px Arial";
+			ctx.fillStyle = "grey";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "middle";
+			ctx.fillText(months[i], x, y);
+		}
+		
+		// Draw hour hand
+		var now = new Date();
+		var hours = now.getHours() % 12;
+		var minutes = now.getMinutes();
+		var angle = (hours + minutes / 60) * Math.PI / 6;
+		var x = centerX + (hourRadius - 20 * scaleFactor) * Math.sin(angle);
+		var y = centerY - (hourRadius - 20 * scaleFactor) * Math.cos(angle);
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.lineTo(x, y);
+		ctx.strokeStyle = "white";
+		ctx.lineWidth = hourHandWidth;
+		ctx.stroke();
+		
+		// Draw minute hand
+		var angle = minutes * Math.PI / 30;
+		var x = centerX + (minRadius - 30 * scaleFactor) * Math.sin(angle);
+		var y = centerY - (minRadius - 30 * scaleFactor) * Math.cos(angle);
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.lineTo(x, y);
+		ctx.strokeStyle = "white";
+		ctx.lineWidth = minuteHandWidth;
+		ctx.stroke();
+		
+		// Draw second hand
+		var seconds = now.getSeconds();
+		var angle = seconds * Math.PI / 30;
+		var x = centerX + (minRadius - 10 * scaleFactor) * Math.sin(angle);
+		var y = centerY - (minRadius - 10 * scaleFactor) * Math.cos(angle);
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.lineTo(x, y);
+		ctx.strokeStyle = "red";
+		ctx.lineWidth = secondHandWidth;
+		ctx.stroke();
+		
+		// Draw arrow
+		ctx.beginPath();
+		ctx.moveTo(centerX - arrowSize / 2, centerY - radius + 20 * scaleFactor);
+		ctx.lineTo(centerX, centerY - radius - 20 * scaleFactor);
+		ctx.lineTo(centerX + arrowSize / 2, centerY - radius + 20 * scaleFactor);
+		ctx.fillStyle = "white";
+		ctx.fill();
+		
+		// Draw month hand
+		var month = now.getMonth();
+		var angle = month * Math.PI / 6;
+		var x = centerX + (monthRadius - 20 * scaleFactor) * Math.sin(angle);
+		var y = centerY - (monthRadius - 20 * scaleFactor) * Math.cos(angle);
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.lineTo(x, y);
+		ctx.strokeStyle = "grey";
+		ctx.lineWidth = minuteHandWidth;
+		ctx.stroke();
+		
+		// Draw weekday hand
+		var weekday = now.getDay();
+		var angle = weekday * (Math.PI * 2 / 7);
+		var x = centerX + (weekdayRadius - 20 * scaleFactor) * Math.sin(angle);
+		var y = centerY - (weekdayRadius - 20 * scaleFactor) * Math.cos(angle);
+		ctx.beginPath();
+		ctx.moveTo(centerX, centerY);
+		ctx.lineTo(x, y);
+		ctx.strokeStyle = "grey";
+		ctx.lineWidth = minuteHandWidth;
+		ctx.stroke();
+	}
+	
+	setInterval(drawClock, 1000);
+</script>
+</body>
+</html>
