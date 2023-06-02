@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Vector Model Viewer</title>
+    <meta charset="UTF-8">
+    <script src="three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30%;
+            height: 100%;
+            resize: none;
+            font-family: monospace;
+            font-size: 16px;
+            padding: 20px;
+            box-sizing: border-box;
+            border: none;
+            background-color: #222;
+            color: #fff;
+        }
+        #canvas {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 30%;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="input"></textarea>
+    <div id="canvas"></div>
+    <script>
+        var container = document.getElementById("canvas");
+        var scene, camera, renderer;
+        var objects = [];
+        var mouseDown = false;
+        var mouseX = 0, mouseY = 0;
+        var targetX = 0, targetY = 0;
+        var targetRotationX = 0, targetRotationY = 0;
+        var windowHalfX = window.innerWidth / 2;
+        var windowHalfY = window.innerHeight / 2;
+
+        init();
+        animate();
+
+        function init() {
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            var gridHelper = new THREE.GridHelper(10, 10);
+            scene.add(gridHelper);
+
+            var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+
+            var input = document.getElementById("input");
+            input.addEventListener("input", function() {
+                clearScene();
+                parseInput(input.value);
+            });
+
+            document.addEventListener("mousedown", onDocumentMouseDown);
+            document.addEventListener("mouseup", onDocumentMouseUp);
+            document.addEventListener("mousemove", onDocumentMouseMove);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            updateCamera();
+            renderer.render(scene, camera);
+        }
+
+        function clearScene() {
+            for (var i = 0; i < objects.length; i++) {
+                scene.remove(objects[i]);
+            }
+            objects = [];
+        }
+
+        function parseInput(inputString) {
+            var lines = inputString.split("\n");
+            var currentLoc = new THREE.Vector3();
+            var currentRot = new THREE.Vector3();
+            var currentColor = new THREE.Color();
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+                if (line.length == 0) {
+                    continue;
+                }
+                var parts = line.split(" ");
+                switch (parts[0]) {
+                    case "loc":
+                        currentLoc.set(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+                        break;
+                    case "rot":
+                        currentRot.set(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+                        break;
+                    case "rgb":
+						currentColor.setRGB(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+						break;
+					case "color":
+						currentColor.setRGB(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+						break;
+                    case "sphere":
+						if(parts.length > 2){
+						currentLoc.set(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+	                        var geometry = new THREE.SphereGeometry(parseFloat(parts[4]), 32, 32);
+	                        var material = new THREE.MeshPhongMaterial({color: currentColor});
+	                        var sphere = new THREE.Mesh(geometry, material);
+	                        sphere.position.copy(currentLoc);
+	                        sphere.rotation.setFromVector3(currentRot);
+	                        scene.add(sphere);
+	                        objects.push(sphere);
+						}
+						else
+						{
+						  var geometry = new THREE.SphereGeometry(parseFloat(parts[1]), 32, 32);
+	                        var material = new THREE.MeshPhongMaterial({color: currentColor});
+	                        var sphere = new THREE.Mesh(geometry, material);
+	                        sphere.position.copy(currentLoc);
+	                        sphere.rotation.setFromVector3(currentRot);
+	                        scene.add(sphere);
+	                        objects.push(sphere);
+						}
+                        break;
+                    case "atom":
+						if(parts.length > 2){
+						currentLoc.set(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+	                        var geometry = new THREE.SphereGeometry(parseFloat(parts[4]), 32, 32);
+	                        var material = new THREE.MeshPhongMaterial({color: currentColor});
+	                        var sphere = new THREE.Mesh(geometry, material);
+	                        sphere.position.copy(currentLoc);
+	                        sphere.rotation.setFromVector3(currentRot);
+	                        scene.add(sphere);
+	                        objects.push(sphere);
+						}
+						else
+						{
+						  var geometry = new THREE.SphereGeometry(parseFloat(parts[1]), 32, 32);
+	                        var material = new THREE.MeshPhongMaterial({color: currentColor});
+	                        var sphere = new THREE.Mesh(geometry, material);
+	                        sphere.position.copy(currentLoc);
+	                        sphere.rotation.setFromVector3(currentRot);
+	                        scene.add(sphere);
+	                        objects.push(sphere);
+						}
+                        break;
+                    case "cube":
+                        var geometry = new THREE.BoxGeometry(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+                        var material = new THREE.MeshPhongMaterial({color: currentColor});
+                        var cube = new THREE.Mesh(geometry, material);
+                        cube.position.copy(currentLoc);
+                        cube.rotation.setFromVector3(currentRot);
+                        scene.add(cube);
+                        objects.push(cube);
+                        break;
+                    case "cylinder":
+                        var geometry = new THREE.CylinderGeometry(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]), 32);
+                        var material = new THREE.MeshPhongMaterial({color: currentColor});
+                        var cylinder = new THREE.Mesh(geometry, material);
+                        cylinder.position.copy(currentLoc);
+                        cylinder.rotation.setFromVector3(currentRot);
+                        scene.add(cylinder);
+                        objects.push(cylinder);
+                        break;
+                    case "link":
+						var x1 = parseFloat(parts[1]);
+						var y1 = parseFloat(parts[2]);
+						var z1 = parseFloat(parts[3]);
+						var x2 = parseFloat(parts[4]);
+						var y2 = parseFloat(parts[5]);
+						var z2 = parseFloat(parts[6]);
+						var length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+						var radius = parseFloat(parts[7]);
+						var geometry = new THREE.CylinderGeometry(radius, radius, length, 32);
+						var material = new THREE.MeshPhongMaterial({color: currentColor});
+						var cylinder = new THREE.Mesh(geometry, material);
+						cylinder.position.set((x1+x2)/2, (y1+y2)/2, (z1+z2)/2);
+						cylinder.lookAt(new THREE.Vector3(x2, y2, z2));
+						cylinder.rotateX(Math.PI / 2);
+
+						scene.add(cylinder);
+						objects.push(cylinder);
+                        break;
+					case "bond":
+						var x1 = parseFloat(parts[1]);
+						var y1 = parseFloat(parts[2]);
+						var z1 = parseFloat(parts[3]);
+						var x2 = parseFloat(parts[4]);
+						var y2 = parseFloat(parts[5]);
+						var z2 = parseFloat(parts[6]);
+						var length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2));
+						var radius = parseFloat(parts[7]);
+						var geometry = new THREE.CylinderGeometry(radius, radius, length, 32);
+						var material = new THREE.MeshPhongMaterial({color: currentColor});
+						var cylinder = new THREE.Mesh(geometry, material);
+						cylinder.position.set((x1+x2)/2, (y1+y2)/2, (z1+z2)/2);
+						cylinder.lookAt(new THREE.Vector3(x2, y2, z2));
+						cylinder.rotateX(Math.PI / 2);
+
+						scene.add(cylinder);
+						objects.push(cylinder);
+                        break;
+                }
+            }
+        }
+
+        function onDocumentMouseDown(event) {
+            mouseDown = true;
+            mouseX = event.clientX - windowHalfX;
+            mouseY = event.clientY - windowHalfY;
+            targetX = targetRotationX;
+            targetY = targetRotationY;
+        }
+
+        function onDocumentMouseUp(event) {
+            mouseDown = false;
+        }
+
+        function onDocumentMouseMove(event) {
+            if (mouseDown) {
+                var mouseXDelta = (event.clientX - windowHalfX) - mouseX;
+                var mouseYDelta = (event.clientY - windowHalfY) - mouseY;
+                targetRotationY = targetY + (mouseXDelta * 0.01);
+                targetRotationX = targetX + (mouseYDelta * 0.01);
+            }
+        }
+
+        function updateCamera() {
+            camera.position.x += (targetRotationY - camera.position.x) * 0.05;
+            camera.position.y += (-targetRotationX - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+        }
+    </script>
+</body>
+</html>
