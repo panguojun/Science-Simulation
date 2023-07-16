@@ -1,4 +1,4 @@
-### Scientific Visualization
+# Scientific Visualization
 
 ## Introduction:
 The use of AI will help us to better understand the universe and its mysteries. This project is a personal repository of simulation codes that I have developed over time. The codes cover various fields such as physics, chemistry, biology, and engineering. The aim of this project is to provide a centralized location for all my simulation codes, allowing me to easily access and maintain them.
